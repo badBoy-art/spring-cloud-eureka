@@ -18,7 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.Locale;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.example.controller", "com.example.serveice" })
+@ComponentScan(basePackages = {"com.example.controller", "com.example.serveice", "com.example.netty"})
 //@EnableDiscoveryClient
 @EnableSwagger2
 public class SpringCloudEurekaApplication {
