@@ -22,10 +22,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * firstSpringBootController
@@ -46,12 +49,15 @@ public class HelloController {
 
     //http://127.0.0.1:8080/eurekaclient/hello/3
 
-    @RequestMapping(value = "hello/{param}", method = RequestMethod.GET)
+    @RequestMapping(value = "hello/{param}/{param2}", method = RequestMethod.GET)
     @ApiOperation(value = "查询信息", notes = "根据param得到返回")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param", value = "请求参数", required = true, dataType = "String", paramType = "path")})
-    public ResponseEntity<String> hello(
-            @PathVariable("param") String param) {
+    public ResponseEntity<String> hello(HttpServletRequest request, @PathVariable("param") String param,
+                                        @PathVariable("param") String param2,
+                                        @RequestParam(required = false) String param3) {
+        Map<String, String[]> paramMap = request.getParameterMap();
+        Object obj = request.getAttribute("org.springframework.web.servlet.HandlerMapping.uriTemplateVariables");
         //tag必须成对出现，也就是偶数个
         Counter counter = Counter.builder("counter").tag("counter", "counter").description("counter")
                 .register(new SimpleMeterRegistry());
