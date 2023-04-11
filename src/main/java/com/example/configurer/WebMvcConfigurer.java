@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.util.List;
 
@@ -26,6 +27,11 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
         converters.add(0, converter);
     }
 
+    /**
+     * @return
+     * @see ResponseBodyAdvice
+     * 对返回结果进行统一封装
+     */
     @Bean
     public JSONPResponseBodyAdvice jsonpResponseBodyAdvice() {
         return new JSONPResponseBodyAdvice();
