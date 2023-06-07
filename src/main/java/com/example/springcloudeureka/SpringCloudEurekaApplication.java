@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -58,7 +61,6 @@ public class SpringCloudEurekaApplication {
         // System.exit(0); //终止程序
     }
 
-
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         Environment environment = ctx.getEnvironment();
@@ -70,5 +72,23 @@ public class SpringCloudEurekaApplication {
             personSpring.sayBye();
             //System.exit(0);
         };
+    }
+
+    /**
+     * SpringBootServletInitializer
+     * 项目打包成一个war包丢入tomcat中
+     *
+     * @param application
+     * @return
+     */
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(SpringCloudEurekaApplication.class);
+    }
+
+    @Bean
+    public ConfigurableServletWebServerFactory webServerFactory() {
+        TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
+        factory.addConnectorCustomizers(connector -> connector.setProperty("relaxedQueryChars", "|{}[]\\"));
+        return factory;
     }
 }
