@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
@@ -25,10 +27,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Locale;
 
-@SpringBootApplication
 @ComponentScan(basePackages = {"com.example.controller", "com.example.serveice", "com.example.netty", "com.example.mqtt"})
 //@EnableDiscoveryClient
 @EnableSwagger2
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class})
 public class SpringCloudEurekaApplication {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringCloudEurekaApplication.class);
