@@ -27,10 +27,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Locale;
 
-@ComponentScan(basePackages = {"com.example.controller", "com.example.serveice", "com.example.netty", "com.example.mqtt"})
+@ComponentScan(basePackages = {"com.example.controller", "com.example.serveice", "com.example.netty",
+        "com.example.mqtt", "com.example.util"})
 //@EnableDiscoveryClient
 @EnableSwagger2
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class})
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class,
+        DataSourceTransactionManagerAutoConfiguration.class})
 public class SpringCloudEurekaApplication {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringCloudEurekaApplication.class);
@@ -45,13 +47,15 @@ public class SpringCloudEurekaApplication {
 
         ListService listService = context.getBean(ListService.class);
 
-        System.out.println(context.getEnvironment().getProperty("os.name") + "系统下的列表命令为: " + listService.showListCmd());
+        System.out.println(
+                context.getEnvironment().getProperty("os.name") + "系统下的列表命令为: " + listService.showListCmd());
 
         System.out.println(Locale.getDefault().getLanguage());
         context.close();
 
         StringRedisTemplate template = ctx.getBean(StringRedisTemplate.class);
-        AnnotationConfigApplicationContext delegateContext = new AnnotationConfigApplicationContext(JedisCacheConfig.class);
+        AnnotationConfigApplicationContext delegateContext = new AnnotationConfigApplicationContext(
+                JedisCacheConfig.class);
         MessageDelegate delegate = delegateContext.getBean(MessageDelegate.class);
 
         while (delegate.getCount() == 0) {
@@ -77,8 +81,7 @@ public class SpringCloudEurekaApplication {
     }
 
     /**
-     * SpringBootServletInitializer
-     * 项目打包成一个war包丢入tomcat中
+     * SpringBootServletInitializer 项目打包成一个war包丢入tomcat中
      *
      * @param application
      * @return

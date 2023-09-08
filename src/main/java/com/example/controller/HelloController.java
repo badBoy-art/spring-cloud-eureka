@@ -1,6 +1,9 @@
 package com.example.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.example.common.ContextBeanEnum;
+import com.example.serveice.Speak;
+import com.example.serveice.Speakable;
 import com.example.vo.User;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Metrics;
@@ -54,8 +57,7 @@ public class HelloController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "param", value = "请求参数", required = true, dataType = "String", paramType = "path")})
     public ResponseEntity<String> hello(HttpServletRequest request, @PathVariable("param") String param,
-                                        @PathVariable("param") String param2,
-                                        @RequestParam(required = false) String param3) {
+            @PathVariable("param2") String param2, @RequestParam(required = false) String param3) {
         Map<String, String[]> paramMap = request.getParameterMap();
         Object obj = request.getAttribute("org.springframework.web.servlet.HandlerMapping.uriTemplateVariables");
         //tag必须成对出现，也就是偶数个
@@ -75,11 +77,14 @@ public class HelloController {
         System.out.println(counter.measure());
 
         try {
+            Speak speak = ContextBeanEnum.SPEAKABLE.apply();
+            Speakable speakable = (Speakable) speak;
+            speakable.sayHi();
             System.out.println(resource.exists());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResponseEntity.ok(str + param + param + param + param + param + param);
+        return ResponseEntity.ok(str + param + param2 + param3);
     }
 
     @RequestMapping(value = "uploadUser", method = RequestMethod.POST)
