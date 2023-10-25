@@ -3,6 +3,7 @@ package com.example.springcloudeureka;
 import com.alibaba.fastjson.JSON;
 import com.example.configurer.ConditionConifg;
 import com.example.configurer.JedisCacheConfig;
+import com.example.configurer.LifecycleConfig;
 import com.example.serveice.ListService;
 import com.example.serveice.Speakable;
 import com.example.serveice.impl.MessageDelegate;
@@ -47,15 +48,18 @@ public class SpringCloudEurekaApplication {
 
         ListService listService = context.getBean(ListService.class);
 
-        System.out.println(
-                context.getEnvironment().getProperty("os.name") + "系统下的列表命令为: " + listService.showListCmd());
+        System.out.println(context.getEnvironment().getProperty("os.name") + "系统下的列表命令为: " + listService.showListCmd());
 
         System.out.println(Locale.getDefault().getLanguage());
         context.close();
 
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(LifecycleConfig.class);
+        applicationContext.start();
+        applicationContext.stop();
+        applicationContext.close();
+
         StringRedisTemplate template = ctx.getBean(StringRedisTemplate.class);
-        AnnotationConfigApplicationContext delegateContext = new AnnotationConfigApplicationContext(
-                JedisCacheConfig.class);
+        AnnotationConfigApplicationContext delegateContext = new AnnotationConfigApplicationContext(JedisCacheConfig.class);
         MessageDelegate delegate = delegateContext.getBean(MessageDelegate.class);
 
         while (delegate.getCount() == 0) {
