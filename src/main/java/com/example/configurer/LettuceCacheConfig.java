@@ -1,5 +1,8 @@
 package com.example.configurer;
 
+import java.time.Duration;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
@@ -10,10 +13,7 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-
-import java.time.Duration;
 
 /**
  * @author xuedui.zhao
@@ -21,6 +21,7 @@ import java.time.Duration;
  */
 @Configuration
 @EnableCaching
+@AutoConfigureBefore(RedisAutoConfiguration.class)
 public class LettuceCacheConfig extends CachingConfigurerSupport {
 
     @Bean
@@ -33,7 +34,6 @@ public class LettuceCacheConfig extends CachingConfigurerSupport {
         configuration.setPort(6379);
         configuration.setDatabase(0);
 
-
         LettuceConnectionFactory factory = new LettuceConnectionFactory(configuration);
         // Spring Data Redis1.x这么来设置  2.0后建议使用RedisStandaloneConfiguration来取代
         //factory.setHostName("10.102.132.150");
@@ -44,9 +44,15 @@ public class LettuceCacheConfig extends CachingConfigurerSupport {
     }
 
     @Bean
-    public RedisTemplate<String, String> stringRedisTemplate() {
-        RedisTemplate<String, String> redisTemplate = new StringRedisTemplate();
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
+    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        StringRedisTemplate redisTemplate = new StringRedisTemplate();
+//        redisTemplate.setKeySerializer(new StringRedisSerializer());
+//        redisTemplate.setValueSerializer(new StringRedisSerializer());
+//        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+//        redisTemplate.setHashValueSerializer(new StringRedisSerializer());
+//        redisTemplate.setStringSerializer(new StringRedisSerializer());
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }
 

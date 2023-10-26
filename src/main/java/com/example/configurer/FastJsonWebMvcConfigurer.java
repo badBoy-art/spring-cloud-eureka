@@ -15,7 +15,7 @@ import java.util.List;
  * @create 2019-07-04
  */
 @Configuration
-public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
+public class FastJsonWebMvcConfigurer extends WebMvcConfigurerAdapter {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -36,4 +36,6 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     public JSONPResponseBodyAdvice jsonpResponseBodyAdvice() {
         return new JSONPResponseBodyAdvice();
     }
+
+
 }

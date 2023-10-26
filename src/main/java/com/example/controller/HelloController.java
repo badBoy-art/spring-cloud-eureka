@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.example.common.ContextBeanEnum;
+import com.example.resolver.IP;
 import com.example.serveice.Speak;
 import com.example.serveice.Speakable;
 import com.example.vo.User;
@@ -11,6 +12,10 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,11 +32,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
 
 /**
  * firstSpringBootController
@@ -54,10 +54,9 @@ public class HelloController {
 
     @RequestMapping(value = "hello/{param}/{param2}", method = RequestMethod.GET)
     @ApiOperation(value = "查询信息", notes = "根据param得到返回")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "param", value = "请求参数", required = true, dataType = "String", paramType = "path")})
+    @ApiImplicitParams({@ApiImplicitParam(name = "param", value = "请求参数", required = true, dataType = "String", paramType = "path")})
     public ResponseEntity<String> hello(HttpServletRequest request, @PathVariable("param") String param,
-            @PathVariable("param2") String param2, @RequestParam(required = false) String param3) {
+            @PathVariable("param2") String param2, @RequestParam(required = false) String param3, @IP String ip) {
         Map<String, String[]> paramMap = request.getParameterMap();
         Object obj = request.getAttribute("org.springframework.web.servlet.HandlerMapping.uriTemplateVariables");
         //tag必须成对出现，也就是偶数个
@@ -84,7 +83,7 @@ public class HelloController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResponseEntity.ok(str + param + param2 + param3);
+        return ResponseEntity.ok(str + param + param2 + param3 + ip);
     }
 
     @RequestMapping(value = "uploadUser", method = RequestMethod.POST)

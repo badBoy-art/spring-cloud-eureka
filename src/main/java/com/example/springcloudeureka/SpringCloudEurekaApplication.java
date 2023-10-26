@@ -7,6 +7,7 @@ import com.example.configurer.LifecycleConfig;
 import com.example.serveice.ListService;
 import com.example.serveice.Speakable;
 import com.example.serveice.impl.MessageDelegate;
+import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.Locale;
-
 @ComponentScan(basePackages = {"com.example.controller", "com.example.serveice", "com.example.netty",
-        "com.example.mqtt", "com.example.util"})
+        "com.example.mqtt", "com.example.util", "com.example.configurer"})
 //@EnableDiscoveryClient
 @EnableSwagger2
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class,
