@@ -40,6 +40,7 @@ public class LettuceCacheConfig extends CachingConfigurerSupport {
         //factory.setPassword("123456");
         //factory.setPort(6379);
         //factory.setDatabase(0);
+        factory.afterPropertiesSet();
         return factory;
     }
 
