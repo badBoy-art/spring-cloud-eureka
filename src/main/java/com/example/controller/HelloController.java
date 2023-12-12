@@ -5,6 +5,7 @@ import com.example.common.ContextBeanEnum;
 import com.example.resolver.IP;
 import com.example.serveice.Speak;
 import com.example.serveice.Speakable;
+import com.example.serveice.WelcomeUtil;
 import com.example.vo.User;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Metrics;
@@ -83,7 +84,7 @@ public class HelloController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResponseEntity.ok(str + param + param2 + param3 + ip);
+        return ResponseEntity.ok(str + param + param2 + param3 + ip + WelcomeUtil.getS());
     }
 
     @RequestMapping(value = "uploadUser", method = RequestMethod.POST)
