@@ -27,8 +27,14 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@ComponentScan(basePackages = {"com.example.controller", "com.example.serveice", "com.example.netty",
-        "com.example.mqtt", "com.example.util", "com.example.configurer", "com.example.config"})
+@ComponentScan(basePackages = {"com.example.controller",
+        "com.example.serveice",
+        "com.example.netty",
+        "com.example.mqtt",
+        "com.example.util",
+        "com.example.configurer",
+        "com.example.config",
+        "com.example.aop"})
 //@EnableDiscoveryClient
 @EnableSwagger2
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class,
