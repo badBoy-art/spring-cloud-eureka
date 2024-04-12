@@ -37,5 +37,4 @@ public class FastJsonWebMvcConfigurer extends WebMvcConfigurerAdapter {
         return new JSONPResponseBodyAdvice();
     }
 
-
 }

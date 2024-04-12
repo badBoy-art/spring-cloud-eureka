@@ -223,6 +223,11 @@
             <artifactId>debezium-connector-mysql</artifactId>
             <version>${debezium.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.phantomthief</groupId>
+            <artifactId>scope</artifactId>
+            <version>1.0.17</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
