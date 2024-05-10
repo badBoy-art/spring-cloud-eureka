@@ -1,4 +1,4 @@
-package com.example.serveice;
+package com.example.service;
 
 import com.example.response.BaseWebResponse;
 import com.example.vo.User;
@@ -13,7 +13,8 @@ import java.util.Map;
  * @author badBoy
  * @create 2019-09-12
  */
-@Service public class AddUserService {
+@Service
+public class AddUserService {
 
     Map<String, User> map = new HashMap<>(3);
 

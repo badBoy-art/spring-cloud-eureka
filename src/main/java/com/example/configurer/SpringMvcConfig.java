@@ -8,6 +8,7 @@ import com.example.resolver.StringCodeToEnumConverterFactory;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.filter.RequestContextFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -82,7 +83,8 @@ public class SpringMvcConfig {
     }
 
     @Bean
-    public FilterRegistrationBean requestContextFilter() {
+    @Primary
+    public FilterRegistrationBean filterRegistrationBean() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         RequestContextFilter requestContextFilter = new RequestContextFilter();
         requestContextFilter.setThreadContextInheritable(true);

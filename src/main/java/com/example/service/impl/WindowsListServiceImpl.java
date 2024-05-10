@@ -1,6 +1,6 @@
-package com.example.serveice.impl;
+package com.example.service.impl;
 
-import com.example.serveice.ListService;
+import com.example.service.ListService;
 
 /**
  * @author xuedui.zhao

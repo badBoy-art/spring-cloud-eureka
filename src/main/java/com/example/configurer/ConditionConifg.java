@@ -3,10 +3,10 @@ package com.example.configurer;
 import com.example.condition.LinuxCondition;
 import com.example.condition.MacCondition;
 import com.example.condition.WindowsCondition;
-import com.example.serveice.ListService;
-import com.example.serveice.impl.LinuxListServiceImpl;
-import com.example.serveice.impl.MacListServiceImpl;
-import com.example.serveice.impl.WindowsListServiceImpl;
+import com.example.service.ListService;
+import com.example.service.impl.LinuxListServiceImpl;
+import com.example.service.impl.MacListServiceImpl;
+import com.example.service.impl.WindowsListServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
@@ -35,5 +35,10 @@ public class ConditionConifg {
     public ListService macListService() {
         return new MacListServiceImpl();
     }
+
+//    @Bean
+//    public ListService myService() {
+//        return new MyListServiceImpl();
+//    }
 
 }

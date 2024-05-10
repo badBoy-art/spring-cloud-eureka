@@ -1,6 +1,6 @@
-package com.example.serveice.impl;
+package com.example.service.impl;
 
-import com.example.serveice.Speakable;
+import com.example.service.Speakable;
 import org.springframework.stereotype.Service;
 
 /**

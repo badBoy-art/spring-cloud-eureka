@@ -1,7 +1,7 @@
 package com.example.common;
 
-import com.example.serveice.Speak;
-import com.example.serveice.Speakable;
+import com.example.service.Speak;
+import com.example.service.Speakable;
 import com.example.util.SpringContextHolder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

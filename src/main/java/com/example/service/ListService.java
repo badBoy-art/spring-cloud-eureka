@@ -1,4 +1,4 @@
-package com.example.serveice;
+package com.example.service;
 
 /**
  * @author xuedui.zhao

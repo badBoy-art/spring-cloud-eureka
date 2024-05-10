@@ -1,4 +1,4 @@
-package com.example.serveice;
+package com.example.service;
 
 /**
  * @author xuedui.zhao
@@ -7,6 +7,7 @@ package com.example.serveice;
 public interface Speakable extends Speak {
 
     void sayHi();
+
     void sayBye();
 
 }

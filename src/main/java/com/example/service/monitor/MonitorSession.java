@@ -1,4 +1,4 @@
-package com.example.serveice.monitor;
+package com.example.service.monitor;
 
 /**
  * @author xuedui.zhao

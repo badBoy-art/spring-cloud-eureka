@@ -1,7 +1,7 @@
 package com.example.controller;
 
 import com.example.response.BaseWebResponse;
-import com.example.serveice.AddUserService;
+import com.example.service.AddUserService;
 import com.example.vo.User;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.example.serveice.monitor;
+package com.example.service.monitor;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MonitorAdvice {
 
-    @Pointcut("execution (* com.example.serveice.Speakable.*(..))")
+    @Pointcut("execution (* com.example.service.Speakable.*(..))")
     public void pointcut() {
     }
 

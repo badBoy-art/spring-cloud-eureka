@@ -1,6 +1,6 @@
 package com.example.configurer;
 
-import com.example.serveice.impl.MessageDelegate;
+import com.example.service.impl.MessageDelegate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
