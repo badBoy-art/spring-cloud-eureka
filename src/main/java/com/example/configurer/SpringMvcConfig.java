@@ -1,5 +1,7 @@
 package com.example.configurer;
 
+import com.example.controller.FirstController;
+import com.example.controller.SecondController;
 import com.example.filter.MyFilter;
 import com.example.interceptor.MyInterceptor;
 import com.example.resolver.IntegerCodeToEnumConverterFactory;
@@ -100,6 +102,16 @@ public class SpringMvcConfig {
         registrationBean.setFilter(new MyFilter());
         registrationBean.addUrlPatterns("/*"); // 指定过滤的URL
         return registrationBean;
+    }
+
+    @Bean
+    public FirstController firstController() {
+        return new FirstController();
+    }
+
+    @Bean
+    public SecondController secondController() {
+        return new SecondController();
     }
 
 }
