@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @create: 2024-05-13 19:38
  * @Description:
  */
+@RequestMapping("/bill")
 public class SecondController extends BaseController {
     @RequestMapping(value = "/someUrl2", method = RequestMethod.GET)
     public String secondMethod() {

@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @create: 2024-05-14 22:08
  * @Description:
  */
-@RestController("/base")
+@RestController
 public class BaseController {
 }
