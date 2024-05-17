@@ -24,6 +24,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Locale;
@@ -41,6 +42,8 @@ import java.util.Locale;
 @EnableSwagger2
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class,
         DataSourceTransactionManagerAutoConfiguration.class})
+//springboot开启事物，可以使用@Transactional注解来指定方法开启事物
+@EnableTransactionManagement
 public class SpringCloudEurekaApplication {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringCloudEurekaApplication.class);
