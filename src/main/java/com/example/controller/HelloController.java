@@ -89,7 +89,8 @@ public class HelloController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResponseEntity.ok(str + param + param2 + param3 + ip + WelcomeUtil.getS() + " JavaCharset: " + BeanUtils.getDefaultJavaCharset());
+        return ResponseEntity.ok(str + param + param2 + param3 + ip + WelcomeUtil.getS() + " JavaCharset: " + BeanUtils.getDefaultJavaCharset()
+                + " MIMECharset: " + BeanUtils.getDefaultMIMECharset());
     }
 
     @RequestMapping(value = "uploadUser", method = RequestMethod.POST)
