@@ -6,6 +6,7 @@ import com.example.resolver.IP;
 import com.example.service.Speak;
 import com.example.service.Speakable;
 import com.example.service.WelcomeUtil;
+import com.example.util.BeanUtils;
 import com.example.vo.User;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Metrics;
@@ -65,8 +66,8 @@ public class HelloController {
         Map<String, String[]> paramMap = request.getParameterMap();
         Object obj = request.getAttribute("org.springframework.web.servlet.HandlerMapping.uriTemplateVariables");
         //tag必须成对出现，也就是偶数个
-        Counter counter = Counter.builder("counter").tag("counter", "counter").description("counter")
-                .register(new SimpleMeterRegistry());
+        Counter counter =
+                Counter.builder("counter").tag("counter", "counter").description("counter").register(new SimpleMeterRegistry());
         counter.increment();
         counter.increment(2D);
         System.out.println(counter.count());
@@ -88,13 +89,13 @@ public class HelloController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResponseEntity.ok(str + param + param2 + param3 + ip + WelcomeUtil.getS());
+        return ResponseEntity.ok(str + param + param2 + param3 + ip + WelcomeUtil.getS() + " JavaCharset: " + BeanUtils.getDefaultJavaCharset());
     }
 
     @RequestMapping(value = "uploadUser", method = RequestMethod.POST)
     @ApiOperation(value = "上传用户信息", notes = "将上传信息以json形势返回")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "user", value = "请求参数", required = true, dataType = "User", paramType = "object")})
+    @ApiImplicitParams({@ApiImplicitParam(name = "user", value = "请求参数", required = true, dataType = "User",
+            paramType = "object")})
     public ResponseEntity<User> uploadUser(HttpServletRequest request, @RequestBody @Validated User user) {
         String queryStr = request.getQueryString();
         System.out.println(JSON.toJSONString(user));
