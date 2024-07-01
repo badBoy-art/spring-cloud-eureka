@@ -7,6 +7,7 @@ import com.example.interceptor.MyInterceptor;
 import com.example.resolver.IntegerCodeToEnumConverterFactory;
 import com.example.resolver.IpMethodArgumentResolver;
 import com.example.resolver.StringCodeToEnumConverterFactory;
+import com.example.service.SameTypeService;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -114,6 +115,21 @@ public class SpringMvcConfig {
         return new SecondController();
     }
 
+
+    @Bean
+    public TypeServiceFactoryPostProcessor PersonFactoryPostProcessor() {
+        return new TypeServiceFactoryPostProcessor();
+    }
+
+    @Bean
+    public SameTypeService sameTypeService() {
+        return new SameTypeService();
+    }
+
+    @Bean
+    public SameService service() {
+        return new SameService();
+    }
 }
 
 

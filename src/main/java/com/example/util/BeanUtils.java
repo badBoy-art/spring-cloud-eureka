@@ -1,7 +1,9 @@
 package com.example.util;
 
+import com.example.service.StaticService;
 import org.apache.commons.io.input.NullInputStream;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +24,11 @@ public class BeanUtils {
     private static Hashtable mime2java = new Hashtable(10);
     private static Hashtable java2mime = new Hashtable(40);
 
-    private BeanUtils() {
+    private static StaticService staticService;
+
+    @Autowired
+    public BeanUtils(StaticService staticService) {
+        BeanUtils.staticService = staticService;
     }
 
     public static String getDefaultMIMECharset() {
@@ -30,7 +36,7 @@ public class BeanUtils {
             defaultMIMECharset = mimeCharset(getDefaultJavaCharset());
         }
 
-        return defaultMIMECharset;
+        return defaultMIMECharset + staticService.getStr();
     }
 
     public static String mimeCharset(String charset) {
@@ -44,12 +50,12 @@ public class BeanUtils {
 
     @Value("${file.encoding:#{null}}")
     public void setDefaultJavaCharset(String defaultJavaCharset) {
-        this.defaultJavaCharset = defaultJavaCharset;
+        BeanUtils.defaultJavaCharset = defaultJavaCharset;
     }
 
     @Value("${mail.mime.charset:#{null}}")
     public void setDefaultMIMECharset(String defaultMIMECharset) {
-        this.defaultMIMECharset = defaultMIMECharset;
+        BeanUtils.defaultMIMECharset = defaultMIMECharset;
     }
 
     public static String getDefaultJavaCharset() {

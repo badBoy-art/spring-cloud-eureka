@@ -2,7 +2,7 @@ package com.example.service;
 
 import com.example.response.BaseWebResponse;
 import com.example.vo.User;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import rx.Single;
 

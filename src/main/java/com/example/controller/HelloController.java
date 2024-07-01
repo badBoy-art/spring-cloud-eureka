@@ -3,6 +3,7 @@ package com.example.controller;
 import com.alibaba.fastjson.JSON;
 import com.example.common.ContextBeanEnum;
 import com.example.resolver.IP;
+import com.example.service.SameTypeService;
 import com.example.service.Speak;
 import com.example.service.Speakable;
 import com.example.service.WelcomeUtil;
@@ -17,6 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +55,10 @@ public class HelloController {
 
     @Value("https://blog.csdn.net/f641385712/article/details/91043955")
     private org.springframework.core.io.Resource resource;
+    @Autowired
+    private SameTypeService typeServiceOne;
+    @Autowired
+    private SameTypeService typeServiceTwo;
 
     //http://127.0.0.1:8080/eurekaclient/hello/3
 
@@ -60,6 +66,7 @@ public class HelloController {
     @ApiOperation(value = "查询信息", notes = "根据param得到返回")
     @ApiImplicitParams({@ApiImplicitParam(name = "param", value = "请求参数", required = true, dataType = "String",
             paramType = "path")})
+
     public ResponseEntity<String> hello(@NotNull HttpServletRequest request, @PathVariable("param") String param,
                                         @PathVariable("param2") String param2,
                                         @RequestParam(required = false) String param3, @IP String ip) {
@@ -89,8 +96,8 @@ public class HelloController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResponseEntity.ok(str + param + param2 + param3 + ip + WelcomeUtil.getS() + " JavaCharset: " + BeanUtils.getDefaultJavaCharset()
-                + " MIMECharset: " + BeanUtils.getDefaultMIMECharset());
+        return ResponseEntity.ok(str + param + param2 + param3 + ip + WelcomeUtil.getS() + " JavaCharset: " +
+                BeanUtils.getDefaultJavaCharset() + " MIMECharset: " + BeanUtils.getDefaultMIMECharset() + "   " + typeServiceOne.getFirstName() + "   " + typeServiceTwo.getFirstName());
     }
 
     @RequestMapping(value = "uploadUser", method = RequestMethod.POST)
