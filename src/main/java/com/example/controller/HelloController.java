@@ -100,6 +100,11 @@ public class HelloController {
                 BeanUtils.getDefaultJavaCharset() + " MIMECharset: " + BeanUtils.getDefaultMIMECharset() + "   " + typeServiceOne.getFirstName() + "   " + typeServiceTwo.getFirstName());
     }
 
+    @RequestMapping(value = "hello2", method = RequestMethod.GET)
+    public Long hello2(@NotNull HttpServletRequest request) {
+        return 1723846293258240009L;
+    }
+
     @RequestMapping(value = "uploadUser", method = RequestMethod.POST)
     @ApiOperation(value = "上传用户信息", notes = "将上传信息以json形势返回")
     @ApiImplicitParams({@ApiImplicitParam(name = "user", value = "请求参数", required = true, dataType = "User",
