@@ -26,6 +26,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,9 +36,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * firstSpringBootController
@@ -96,8 +102,7 @@ public class HelloController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResponseEntity.ok(str + param + param2 + param3 + ip + WelcomeUtil.getS() + " JavaCharset: " +
-                BeanUtils.getDefaultJavaCharset() + " MIMECharset: " + BeanUtils.getDefaultMIMECharset() + "   " + typeServiceOne.getFirstName() + "   " + typeServiceTwo.getFirstName());
+        return ResponseEntity.ok(str + param + param2 + param3 + ip + WelcomeUtil.getS() + " JavaCharset: " + BeanUtils.getDefaultJavaCharset() + " MIMECharset: " + BeanUtils.getDefaultMIMECharset() + "   " + typeServiceOne.getFirstName() + "   " + typeServiceTwo.getFirstName());
     }
 
     @RequestMapping(value = "hello2", method = RequestMethod.GET)
@@ -124,6 +129,28 @@ public class HelloController {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
 
+    @GetMapping("/download-zip")
+    public void downloadZipFile(HttpServletResponse response) throws IOException {
+        // 设置响应头
+        response.setContentType("application/zip");
+        response.setHeader("Content-Disposition", "attachment; filename=\"example.zip\"");
+        response.setHeader("Content-Transfer-Encoding", "binary");
+
+        // 创建ZIP文件
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (ZipOutputStream zos = new ZipOutputStream(baos)) {
+            // 添加文件到ZIP
+            String fileName = "example.txt";
+            ZipEntry zipEntry = new ZipEntry(fileName);
+            zos.putNextEntry(zipEntry);
+            zos.write("Hello, World!".getBytes());
+            zos.closeEntry();
+        }
+
+        // 将ZIP文件写入响应输出流
+        response.getOutputStream().write(baos.toByteArray());
+        response.getOutputStream().flush();
+    }
 }
 
 class ParamValidor implements Validator {
