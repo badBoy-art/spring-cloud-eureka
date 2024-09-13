@@ -25,11 +25,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Locale;
 
-@ComponentScan(basePackages = {"com.example.controller",
+@ComponentScan(basePackages = {
+        "com.example.controller",
         "com.example.service",
         "com.example.netty",
         "com.example.mqtt",
@@ -37,9 +37,10 @@ import java.util.Locale;
         "com.example.configurer",
         "com.example.config",
         "com.example.aop",
-        "com.example.debezium"})
+        "com.example.debezium"
+})
 //@EnableDiscoveryClient
-@EnableSwagger2
+//@EnableSwagger2
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class,
         DataSourceTransactionManagerAutoConfiguration.class})
 //springboot开启事物，可以使用@Transactional注解来指定方法开启事物

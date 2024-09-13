@@ -53,7 +53,7 @@ public class LettuceCacheConfig extends CachingConfigurerSupport {
 //        redisTemplate.setHashValueSerializer(new StringRedisSerializer());
 //        redisTemplate.setStringSerializer(new StringRedisSerializer());
         redisTemplate.setConnectionFactory(redisConnectionFactory);
-        redisTemplate.afterPropertiesSet();
+        //redisTemplate.afterPropertiesSet();
         System.out.println("-------redis_one--------");
         return redisTemplate;
     }

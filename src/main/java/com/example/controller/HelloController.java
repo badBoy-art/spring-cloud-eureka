@@ -12,9 +12,6 @@ import com.example.vo.User;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,14 +62,16 @@ public class HelloController {
     private SameTypeService typeServiceOne;
     @Autowired
     private SameTypeService typeServiceTwo;
+    @Value("${project.name:${spring.application.name:}}")
+    private String projectName;
+    @Value("${project.name}")
+    private String projectName1;
+    @Value("${spring.application.name}")
+    private String applicationName;
 
     //http://127.0.0.1:8080/eurekaclient/hello/3
 
     @RequestMapping(value = "hello/{param}/{param2}", method = RequestMethod.GET)
-    @ApiOperation(value = "查询信息", notes = "根据param得到返回")
-    @ApiImplicitParams({@ApiImplicitParam(name = "param", value = "请求参数", required = true, dataType = "String",
-            paramType = "path")})
-
     public ResponseEntity<String> hello(@NotNull HttpServletRequest request, @PathVariable("param") String param,
                                         @PathVariable("param2") String param2,
                                         @RequestParam(required = false) String param3, @IP String ip) {
@@ -102,7 +101,7 @@ public class HelloController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResponseEntity.ok(str + param + param2 + param3 + ip + WelcomeUtil.getS() + " JavaCharset: " + BeanUtils.getDefaultJavaCharset() + " MIMECharset: " + BeanUtils.getDefaultMIMECharset() + "   " + typeServiceOne.getFirstName() + "   " + typeServiceTwo.getFirstName());
+        return ResponseEntity.ok(str + param + param2 + param3 + ip + WelcomeUtil.getS() + " JavaCharset: " + BeanUtils.getDefaultJavaCharset() + " MIMECharset: " + BeanUtils.getDefaultMIMECharset() + "   " + typeServiceOne.getFirstName() + "   " + typeServiceTwo.getFirstName() + " " + projectName);
     }
 
     @RequestMapping(value = "hello2", method = RequestMethod.GET)
@@ -111,9 +110,6 @@ public class HelloController {
     }
 
     @RequestMapping(value = "uploadUser", method = RequestMethod.POST)
-    @ApiOperation(value = "上传用户信息", notes = "将上传信息以json形势返回")
-    @ApiImplicitParams({@ApiImplicitParam(name = "user", value = "请求参数", required = true, dataType = "User",
-            paramType = "object")})
     public ResponseEntity<User> uploadUser(HttpServletRequest request, @RequestBody @Validated User user) {
         String queryStr = request.getQueryString();
         System.out.println(JSON.toJSONString(user));
