@@ -26,11 +26,13 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -72,14 +74,12 @@ public class HelloController {
     //http://127.0.0.1:8080/eurekaclient/hello/3
 
     @RequestMapping(value = "hello/{param}/{param2}", method = RequestMethod.GET)
-    public ResponseEntity<String> hello(@NotNull HttpServletRequest request, @PathVariable("param") String param,
-                                        @PathVariable("param2") String param2,
+    public ResponseEntity<String> hello(@NotNull HttpServletRequest request, @PathVariable("param") String param, @PathVariable("param2") String param2,
                                         @RequestParam(required = false) String param3, @IP String ip) {
         Map<String, String[]> paramMap = request.getParameterMap();
         Object obj = request.getAttribute("org.springframework.web.servlet.HandlerMapping.uriTemplateVariables");
         //tag必须成对出现，也就是偶数个
-        Counter counter =
-                Counter.builder("counter").tag("counter", "counter").description("counter").register(new SimpleMeterRegistry());
+        Counter counter = Counter.builder("counter").tag("counter", "counter").description("counter").register(new SimpleMeterRegistry());
         counter.increment();
         counter.increment(2D);
         System.out.println(counter.count());
@@ -116,6 +116,12 @@ public class HelloController {
         return ResponseEntity.ok(user);
     }
 
+    @RequestMapping(value = "uploadUser2", method = RequestMethod.POST)
+    public void uploadUser2(HttpServletRequest request, @RequestParam(required = false) String param) {
+        String queryStr = request.getQueryString();
+        System.out.println(queryStr);
+    }
+
     @InitBinder("user")
     public void initBinder(WebDataBinder binder) {
         System.out.println("------binder");
@@ -123,6 +129,25 @@ public class HelloController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+    }
+
+    @PostMapping("/uploadFile")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("description") String description) {
+
+        if (!file.isEmpty()) {
+            try {
+                // 获取文件的字节
+                byte[] bytes = file.getBytes();
+                // 保存文件到服务器的某个目录
+                System.out.println("File size: " + bytes.length);
+            } catch (IOException e) {
+                return "Failed to save the file: " + e.getMessage();
+            }
+        } else {
+            return "Please upload a file.";
+        }
+
+        return "uploadStatus";
     }
 
     @GetMapping("/download-zip")
