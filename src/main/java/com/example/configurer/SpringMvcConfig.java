@@ -2,7 +2,9 @@ package com.example.configurer;
 
 import com.example.controller.FirstController;
 import com.example.controller.SecondController;
+import com.example.filter.FirstFilter;
 import com.example.filter.MyFilter;
+import com.example.filter.SecondFilter;
 import com.example.interceptor.MyInterceptor;
 import com.example.resolver.IntegerCodeToEnumConverterFactory;
 import com.example.resolver.IpMethodArgumentResolver;
@@ -13,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.filter.RequestContextFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -20,6 +23,12 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -101,6 +110,24 @@ public class SpringMvcConfig {
         FilterRegistrationBean<MyFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setOrder(Integer.MIN_VALUE);
         registrationBean.setFilter(new MyFilter());
+        registrationBean.addUrlPatterns("/*"); // 指定过滤的URL
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<FirstFilter> firstFilter() {
+        FilterRegistrationBean<FirstFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setOrder(Integer.MAX_VALUE + 12);
+        registrationBean.setFilter(new FirstFilter());
+        registrationBean.addUrlPatterns("/*"); // 指定过滤的URL
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<SecondFilter> secondFilter() {
+        FilterRegistrationBean<SecondFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setOrder(Integer.MAX_VALUE + 10);
+        registrationBean.setFilter(new SecondFilter());
         registrationBean.addUrlPatterns("/*"); // 指定过滤的URL
         return registrationBean;
     }

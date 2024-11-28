@@ -88,7 +88,7 @@ public class BeanUtils {
             //    defaultJavaCharset = javaCharset(mimecs);
             //    return defaultJavaCharset;
             //}
-            InputStreamReader reader = new InputStreamReader(new NullInputStream());
+            InputStreamReader reader = new InputStreamReader(new NullInputStream(200));
             defaultJavaCharset = reader.getEncoding();
             if (StringUtils.isBlank(defaultJavaCharset)) {
                 defaultJavaCharset = "8859_1";

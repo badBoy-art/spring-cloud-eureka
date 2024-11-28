@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.common.ContextBeanEnum;
 import com.example.resolver.IP;
 import com.example.service.SameTypeService;
@@ -12,6 +13,8 @@ import com.example.vo.User;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,14 +36,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.ContentCachingRequestWrapper;
 
+import javax.servlet.ReadListener;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -101,7 +113,7 @@ public class HelloController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResponseEntity.ok(str + param + param2 + param3 + ip + WelcomeUtil.getS() + " JavaCharset: " + BeanUtils.getDefaultJavaCharset() + " MIMECharset: " + BeanUtils.getDefaultMIMECharset() + "   " + typeServiceOne.getFirstName() + "   " + typeServiceTwo.getFirstName() + " " + projectName);
+        return ResponseEntity.ok(request.getRequestURI() + str + param + param2 + param3 + ip + WelcomeUtil.getS() + " JavaCharset: " + BeanUtils.getDefaultJavaCharset() + " MIMECharset: " + BeanUtils.getDefaultMIMECharset() + "   " + typeServiceOne.getFirstName() + "   " + typeServiceTwo.getFirstName() + " " + projectName);
     }
 
     @RequestMapping(value = "hello2", method = RequestMethod.GET)
@@ -118,8 +130,33 @@ public class HelloController {
 
     @RequestMapping(value = "uploadUser2", method = RequestMethod.POST)
     public void uploadUser2(HttpServletRequest request, @RequestParam(required = false) String param) {
+        String body = null;
+        try {
+            body = getPostJsonBody(request);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         String queryStr = request.getQueryString();
-        System.out.println(queryStr);
+        System.out.println(queryStr + body);
+    }
+
+    private String getPostJsonBody(HttpServletRequest httpServletRequest) throws IOException {
+        ContentCachingRequestWrapper requestWrapper;
+        if (httpServletRequest instanceof ContentCachingRequestWrapper) {
+            requestWrapper = (ContentCachingRequestWrapper) httpServletRequest;
+        } else {
+            requestWrapper = new ContentCachingRequestWrapper(httpServletRequest);
+        }
+        String body2 = new String(requestWrapper.getContentAsByteArray());
+        if (StringUtils.isBlank(body2)) {
+            String characterEncoding = httpServletRequest.getCharacterEncoding();
+            if (StringUtils.isBlank(characterEncoding)) {
+                characterEncoding = httpServletRequest.getHeader("characterEncoding");
+            }
+            body2 = IOUtils.toString(requestWrapper.getInputStream(), characterEncoding);
+        }
+        return body2;
     }
 
     @InitBinder("user")
