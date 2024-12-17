@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import cn.hutool.core.map.MapUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.common.ContextBeanEnum;
@@ -10,6 +11,7 @@ import com.example.service.Speakable;
 import com.example.service.WelcomeUtil;
 import com.example.util.BeanUtils;
 import com.example.vo.User;
+import com.google.common.collect.ImmutableMap;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -84,6 +86,8 @@ public class HelloController {
     private String applicationName;
 
     //http://127.0.0.1:8080/eurekaclient/hello/3
+    private volatile ImmutableMap<String, String> context = null;
+
 
     @RequestMapping(value = "hello/{param}/{param2}", method = RequestMethod.GET)
     public ResponseEntity<String> hello(@NotNull HttpServletRequest request, @PathVariable("param") String param, @PathVariable("param2") String param2,
@@ -113,7 +117,17 @@ public class HelloController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResponseEntity.ok(request.getRequestURI() + str + param + param2 + param3 + ip + WelcomeUtil.getS() + " JavaCharset: " + BeanUtils.getDefaultJavaCharset() + " MIMECharset: " + BeanUtils.getDefaultMIMECharset() + "   " + typeServiceOne.getFirstName() + "   " + typeServiceTwo.getFirstName() + " " + projectName);
+        return ResponseEntity.ok(request.getRequestURI() + str + param + param2 + param3 + ip + WelcomeUtil.getS() + " JavaCharset: " + BeanUtils.getDefaultJavaCharset() + " MIMECharset: " + BeanUtils.getDefaultMIMECharset() + "   " + typeServiceOne.getFirstName() + "   " + typeServiceTwo.getFirstName() + " " + projectName + getMap());
+    }
+
+    private ImmutableMap<String, String> getMap() {
+        if (MapUtil.isNotEmpty(context)) {
+            return context;
+        }
+        synchronized (this) {
+            context = ImmutableMap.of("key", applicationName);
+        }
+        return context;
     }
 
     @RequestMapping(value = "hello2", method = RequestMethod.GET)
@@ -129,7 +143,7 @@ public class HelloController {
     }
 
     @RequestMapping(value = "uploadUser2", method = RequestMethod.POST)
-    public void uploadUser2(HttpServletRequest request, @RequestParam(required = false) String param) {
+    public String uploadUser2(HttpServletRequest request, @RequestParam(required = false) String param) {
         String body = null;
         try {
             body = getPostJsonBody(request);
@@ -138,7 +152,7 @@ public class HelloController {
         }
 
         String queryStr = request.getQueryString();
-        System.out.println(queryStr + body);
+        return queryStr + " body = " + body + " age = " + request.getParameter("age");
     }
 
     private String getPostJsonBody(HttpServletRequest httpServletRequest) throws IOException {

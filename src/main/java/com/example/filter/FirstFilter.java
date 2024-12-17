@@ -148,6 +148,18 @@ public class FirstFilter extends OncePerRequestFilter {
 
     private HttpServletRequest getRequestWrapper(JSONObject externalDataJson, HttpServletRequest request) {
         return new HttpServletRequestWrapper(request) {
+
+            @Override
+            public String getQueryString() {
+                Map<String, String> tenantGatewayMap = Maps.newHashMap();
+                tenantGatewayMap.put("tenantId", "tenantId");
+                StringBuffer stringBuffer = new StringBuffer(super.getQueryString());
+                for (Map.Entry<String, String> entry : tenantGatewayMap.entrySet()) {
+                    stringBuffer.append("&").append(entry.getKey()).append("=").append(entry.getValue());
+                }
+                return stringBuffer.toString();
+            }
+
             @Override
             public String getParameter(String name) {
                 if (StringUtils.equalsIgnoreCase(name, EXTERNAL_DATA_PARAM_NAME)) {
