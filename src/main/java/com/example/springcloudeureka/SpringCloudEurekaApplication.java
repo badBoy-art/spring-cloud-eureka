@@ -25,6 +25,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Locale;
 
@@ -32,7 +33,6 @@ import java.util.Locale;
         "com.example.controller",
         "com.example.service",
         "com.example.netty",
-        "com.example.mqtt",
         "com.example.util",
         "com.example.configurer",
         "com.example.config",
@@ -45,6 +45,7 @@ import java.util.Locale;
         DataSourceTransactionManagerAutoConfiguration.class})
 //springboot开启事物，可以使用@Transactional注解来指定方法开启事物
 @EnableTransactionManagement
+@EnableWebMvc
 public class SpringCloudEurekaApplication {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringCloudEurekaApplication.class);

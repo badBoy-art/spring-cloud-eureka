@@ -1,24 +1,27 @@
+/*
 package com.example.controller;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+*/
 /**
  * @author: badBoy
  * @create: 2024-11-13 10:23
  * @Description:
- */
+ *//*
+
 @WebServlet("/upload")
 @MultipartConfig
 public class FileUploadServlet extends HttpServlet {
@@ -69,3 +72,4 @@ public class FileUploadServlet extends HttpServlet {
         }
     }
 }
+*/

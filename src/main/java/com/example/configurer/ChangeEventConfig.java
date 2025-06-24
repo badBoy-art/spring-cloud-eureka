@@ -69,7 +69,6 @@ public class ChangeEventConfig {
         this.changeEventHandler = changeEventHandler;
     }
 
-    @Bean
     public void cleanFile() {
         if (offsetFileDelete && FileUtil.exist(offsetFileName)) {
             FileUtil.del(offsetFileName);

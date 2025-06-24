@@ -32,15 +32,8 @@ public class JedisCacheConfig extends CachingConfigurerSupport {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
         // 2.0后的写法
         configuration.setHostName("127.0.0.1");
-        //configuration.setPassword(RedisPassword.of("123456"));
         configuration.setPort(6379);
-        //configuration.setDatabase(0);
         JedisConnectionFactory factory = new JedisConnectionFactory(configuration);
-        // Spring Data Redis1.x这么来设置  2.0后建议使用RedisStandaloneConfiguration来取代
-        //factory.setHostName("10.102.132.150");
-        //factory.setPassword("123456");
-        //factory.setPort(6379);
-        //factory.setDatabase(0);
         factory.afterPropertiesSet();
         return factory;
     }

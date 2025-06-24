@@ -1,8 +1,10 @@
 package com.example.controller;
 
+import com.example.configurer.RequestBodyType;
 import com.example.response.BaseWebResponse;
 import com.example.service.AddUserService;
 import com.example.vo.User;
+import jakarta.annotation.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import rx.Single;
 import rx.schedulers.Schedulers;
 
-import javax.annotation.Resource;
 import java.net.URI;
 
 /**
@@ -30,6 +31,7 @@ public class ResponsiveController {
     private AddUserService addUserService;
 
     @PostMapping(
+            value = "/user",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -38,7 +40,6 @@ public class ResponsiveController {
                 .subscribeOn(Schedulers.io())
                 .map(s -> ResponseEntity.created(URI.create("/res/" + s)).body(BaseWebResponse.successNoData()));
     }
-
 
     @GetMapping(
             value = "/{sex}",
