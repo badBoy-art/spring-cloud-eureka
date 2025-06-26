@@ -90,15 +90,15 @@ public class SpringMvcConfig {
                 registry.addConverterFactory(new StringCodeToEnumConverterFactory());
             }
 
-            @Override
-            public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-                FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
-                //自定义配置...
-                //FastJsonConfig config = new FastJsonConfig();
-                //config.set ...
-                //converter.setFastJsonConfig(config);
-                converters.add(0, converter);
-            }
+//            @Override
+//            public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+//                FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
+//                //自定义配置...
+//                //FastJsonConfig config = new FastJsonConfig();
+//                //config.set ...
+//                //converter.setFastJsonConfig(config);
+//                converters.add(0, converter);
+//            }
 
         };
     }
