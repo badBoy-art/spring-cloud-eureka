@@ -51,6 +51,7 @@ public class FirstFilter extends OncePerRequestFilter {
             if (StringUtils.isNotBlank(headerVal)) {
                 externalDataJson.put("Content-Type", headerVal);
             }
+            externalDataJson.put("age", 36);
             request = getRequestWrapper(externalDataJson, request);
         } else if (StringUtils.contains(request.getContentType(), "json")) {
             String body = getBodyAsString(request);
@@ -148,42 +149,47 @@ public class FirstFilter extends OncePerRequestFilter {
     private HttpServletRequest getRequestWrapper(JSONObject externalDataJson, HttpServletRequest request) {
         return new HttpServletRequestWrapper(request) {
 
-            @Override
-            public String getQueryString() {
-                Map<String, String> tenantGatewayMap = Maps.newHashMap();
-                tenantGatewayMap.put("tenantId", "tenantId");
-                StringBuffer stringBuffer = new StringBuffer(super.getQueryString());
-                for (Map.Entry<String, String> entry : tenantGatewayMap.entrySet()) {
-                    stringBuffer.append("&").append(entry.getKey()).append("=").append(entry.getValue());
-                }
-                return stringBuffer.toString();
-            }
+//            @Override
+//            public String getQueryString() {
+//                Map<String, String> tenantGatewayMap = Maps.newHashMap();
+//                tenantGatewayMap.put("tenantId", "tenantId");
+//                StringBuffer stringBuffer = new StringBuffer(StringUtils.defaultString(request.getQueryString(), ""));
+//                for (Map.Entry<String, String> entry : tenantGatewayMap.entrySet()) {
+//                    stringBuffer.append("&").append(entry.getKey()).append("=").append(entry.getValue());
+//                }
+//                return stringBuffer.toString();
+//            }
 
-            @Override
-            public String getParameter(String name) {
-                if (StringUtils.equalsIgnoreCase(name, EXTERNAL_DATA_PARAM_NAME)) {
-                    return externalDataJson.toJSONString();
-                }
-                return super.getParameter(name);
-            }
+//            @Override
+//            public String getParameter(String name) {
+//                if (StringUtils.equalsIgnoreCase(name, EXTERNAL_DATA_PARAM_NAME)) {
+//                    return externalDataJson.toJSONString();
+//                }
+//                return super.getParameter(name);
+//            }
 
-            @Override
-            public Map<String, String[]> getParameterMap() {
-                Map<String, String[]> paramMap = super.getParameterMap();
-                Map<String, String[]> filterMaps = Maps.newHashMap();
-                if (MapUtil.isNotEmpty(paramMap)) {
-                    for (Map.Entry<String, String[]> entry : paramMap.entrySet()) {
-                        String entryKey = entry.getKey();
-                        if (StringUtils.equalsIgnoreCase(entryKey, EXTERNAL_DATA_PARAM_NAME)) {
-                            filterMaps.put(entryKey, new String[]{externalDataJson.toJSONString()});
-                        } else {
-                            filterMaps.put(entryKey, entry.getValue());
-                        }
-                    }
-                }
-                return filterMaps;
-            }
+//            @Override
+//            public Map<String, String[]> getParameterMap() {
+//                Map<String, String[]> paramMap = super.getParameterMap();
+//                Map<String, String[]> filterMaps = Maps.newHashMap();
+//                if (MapUtil.isNotEmpty(paramMap)) {
+//                    for (Map.Entry<String, String[]> entry : paramMap.entrySet()) {
+//                        String entryKey = entry.getKey();
+//                        if (StringUtils.equalsIgnoreCase(entryKey, EXTERNAL_DATA_PARAM_NAME)) {
+//                            filterMaps.put(entryKey, new String[]{externalDataJson.toJSONString()});
+//                        } else {
+//                            filterMaps.put(entryKey, entry.getValue());
+//                        }
+//                    }
+//                }
+//                return filterMaps;
+//            }
 
+            /**
+             * body - formData中的参数从这获取
+             * @param name
+             * @return
+             */
             @Override
             public String[] getParameterValues(String name) {
                 if (StringUtils.equalsIgnoreCase(name, EXTERNAL_DATA_PARAM_NAME)) {
@@ -192,23 +198,23 @@ public class FirstFilter extends OncePerRequestFilter {
                 return super.getParameterValues(name);
             }
 
-            @Override
-            public Collection<Part> getParts() throws IOException, ServletException {
-                return FirstFilter.this.getParts(super.getParts(), externalDataJson);
-            }
-
-            @Override
-            public Part getPart(String name) throws IOException, ServletException {
-                Part part = super.getPart(name);
-                if (StringUtils.equalsIgnoreCase(name, EXTERNAL_DATA_PARAM_NAME)) {
-                    // 转换为字节数组
-                    byte[] byteArray = externalDataJson.toJSONString().getBytes();
-                    // 创建ByteArrayInputStream
-                    InputStream inputStream = new ByteArrayInputStream(byteArray);
-                    return new InputStreamPart(inputStream, (ApplicationPart) part);
-                }
-                return part;
-            }
+//            @Override
+//            public Collection<Part> getParts() throws IOException, ServletException {
+//                return FirstFilter.this.getParts(super.getParts(), externalDataJson);
+//            }
+//
+//            @Override
+//            public Part getPart(String name) throws IOException, ServletException {
+//                Part part = super.getPart(name);
+//                if (StringUtils.equalsIgnoreCase(name, EXTERNAL_DATA_PARAM_NAME)) {
+//                    // 转换为字节数组
+//                    byte[] byteArray = externalDataJson.toJSONString().getBytes();
+//                    // 创建ByteArrayInputStream
+//                    InputStream inputStream = new ByteArrayInputStream(byteArray);
+//                    return new InputStreamPart(inputStream, (ApplicationPart) part);
+//                }
+//                return part;
+//            }
         };
     }
 

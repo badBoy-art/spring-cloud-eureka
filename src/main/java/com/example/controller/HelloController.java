@@ -3,6 +3,7 @@ package com.example.controller;
 import cn.hutool.core.map.MapUtil;
 import com.alibaba.fastjson.JSON;
 import com.example.common.ContextBeanEnum;
+import com.example.param.ImportParam;
 import com.example.resolver.IP;
 import com.example.service.SameTypeService;
 import com.example.service.Speak;
@@ -190,6 +191,11 @@ public class HelloController {
         }
 
         return "uploadStatus";
+    }
+
+    @PostMapping("/externalData")
+    public String externalData(ImportParam importParam) {
+        return JSON.toJSONString(importParam);
     }
 
     @GetMapping("/download-zip")

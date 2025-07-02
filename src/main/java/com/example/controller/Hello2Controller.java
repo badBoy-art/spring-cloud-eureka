@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.example.param.ImportParam;
 import com.example.resolver.IP;
 import com.example.vo.User;
 import jakarta.servlet.http.HttpServletRequest;
@@ -61,5 +62,11 @@ public class Hello2Controller extends HelloController {
     @Override
     public void downloadZipFile(HttpServletResponse response) throws IOException {
         super.downloadZipFile(response);
+    }
+
+    @PostMapping("/externalData2")
+    @Override
+    public String externalData(ImportParam importParam) {
+        return JSON.toJSONString(importParam);
     }
 }
