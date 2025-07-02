@@ -3,6 +3,7 @@ package com.example.controller;
 import cn.hutool.core.map.MapUtil;
 import com.alibaba.fastjson.JSON;
 import com.example.common.ContextBeanEnum;
+import com.example.configurer.MyConfig;
 import com.example.param.ImportParam;
 import com.example.resolver.IP;
 import com.example.service.SameTypeService;
@@ -19,6 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,6 +78,8 @@ public class HelloController {
     private String projectName1;
     @Value("${spring.application.name}")
     private String applicationName;
+    @Autowired
+    private MyConfig myConfig;
 
     //http://127.0.0.1:8080/eurekaclient/hello/3
     private volatile ImmutableMap<String, String> context = null;
@@ -109,7 +113,10 @@ public class HelloController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResponseEntity.ok(request.getRequestURI() + str + param + param2 + param3 + ip + WelcomeUtil.getS() + " JavaCharset: " + BeanUtils.getDefaultJavaCharset() + " MIMECharset: " + BeanUtils.getDefaultMIMECharset() + "   " + " " + projectName + getMap());
+        return ResponseEntity.ok(request.getRequestURI() + str + param + param2 + param3 + ip + WelcomeUtil.getS() +
+                " JavaCharset: " + BeanUtils.getDefaultJavaCharset() + " MIMECharset: " + BeanUtils.getDefaultMIMECharset() + "   " + " " +
+                projectName + getMap()
+                + myConfig.getMap());
     }
 
     private ImmutableMap<String, String> getMap() {
