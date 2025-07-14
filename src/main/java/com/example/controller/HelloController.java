@@ -6,11 +6,15 @@ import com.example.common.ContextBeanEnum;
 import com.example.configurer.MyConfig;
 import com.example.param.ImportParam;
 import com.example.resolver.IP;
+import com.example.service.PrototypeService;
+import com.example.service.RequestService;
 import com.example.service.SameTypeService;
+import com.example.service.SessionService;
 import com.example.service.Speak;
 import com.example.service.Speakable;
 import com.example.service.WelcomeUtil;
 import com.example.util.BeanUtils;
+import com.example.util.SpringContextHolder;
 import com.example.vo.User;
 import com.google.common.collect.ImmutableMap;
 import io.micrometer.core.instrument.Counter;
@@ -26,7 +30,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -58,6 +64,7 @@ import java.util.zip.ZipOutputStream;
  * @author xuedui.zhao
  * @create 2018-07-12
  */
+//@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @RestController
 public class HelloController {
 
@@ -80,6 +87,12 @@ public class HelloController {
     private String applicationName;
     @Autowired
     private MyConfig myConfig;
+    @Autowired
+    private RequestService requestService;
+    @Autowired
+    private SessionService sessionService;
+    @Autowired
+    private PrototypeService prototypeService;
 
     //http://127.0.0.1:8080/eurekaclient/hello/3
     private volatile ImmutableMap<String, String> context = null;
@@ -116,7 +129,13 @@ public class HelloController {
         return ResponseEntity.ok(request.getRequestURI() + str + param + param2 + param3 + ip + WelcomeUtil.getS() +
                 " JavaCharset: " + BeanUtils.getDefaultJavaCharset() + " MIMECharset: " + BeanUtils.getDefaultMIMECharset() + "   " + " " +
                 projectName + getMap()
-                + myConfig.getMap());
+                + myConfig.getMap() + "\r\n"
+                + "context-bean " + SpringContextHolder.getBean(RequestService.class).getRequestScope()
+                + " Autowired " + requestService.getRequestScope() + "\r\n"
+                + "context-bean " + SpringContextHolder.getBean(SessionService.class).getRequestScope()
+                + " Autowired " + sessionService.getRequestScope() + "\r\n"
+                + "context-bean " + SpringContextHolder.getBean(PrototypeService.class).getRequestScope()
+                + " Autowired " + prototypeService.getRequestScope());
     }
 
     private ImmutableMap<String, String> getMap() {
