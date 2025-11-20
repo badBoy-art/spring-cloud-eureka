@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.example.configurer.BodyTypeMapping;
 import com.example.param.ImportParam;
 import com.example.resolver.IP;
 import com.example.vo.User;
@@ -8,13 +9,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -24,7 +27,7 @@ import java.io.IOException;
  * @create: 2025-06-24 16:00
  * @Description:
  */
-@Component
+@RestController
 public class Hello2Controller extends HelloController {
 
     @RequestMapping(value = "hello/{param}/{param2}", method = RequestMethod.GET, params = {"param3=5"})
@@ -69,4 +72,25 @@ public class Hello2Controller extends HelloController {
     public String externalData(ImportParam importParam) {
         return JSON.toJSONString(importParam);
     }
+
+    /**
+     * 当 JSON 中 type = "A" 时进入此方法
+     */
+    @BodyTypeMapping(value = "uploadUser", method = RequestMethod.POST, type = "A")
+    public ResponseEntity<User> handleA(@RequestBody @Validated User user) {
+        // 这里可以把 dto 直接交给业务层处理
+        user.setUserName("A");
+        return ResponseEntity.ok(user);
+    }
+
+    /**
+     * 当 JSON 中 type = "B" 时进入此方法
+     */
+    @BodyTypeMapping(value = "uploadUser", method = RequestMethod.POST, type = "B")
+    public ResponseEntity<User> handleB(@RequestBody @Validated User user) {
+        // 这里可以把 dto 直接交给业务层处理
+        user.setUserName("B");
+        return ResponseEntity.ok(user);
+    }
+
 }

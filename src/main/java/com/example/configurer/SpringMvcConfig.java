@@ -4,6 +4,7 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.alibaba.fastjson.support.spring.JSONPResponseBodyAdvice;
 import com.example.controller.FirstController;
 import com.example.controller.SecondController;
+import com.example.filter.BodyTypeExtractingFilter;
 import com.example.filter.FirstFilter;
 import com.example.filter.MyFilter;
 import com.example.filter.SecondFilter;
@@ -16,6 +17,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.Ordered;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.filter.RequestContextFilter;
@@ -127,7 +129,7 @@ public class SpringMvcConfig {
     @Bean
     public FilterRegistrationBean<MyFilter> myFilter() {
         FilterRegistrationBean<MyFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setOrder(Integer.MIN_VALUE);
+        registrationBean.setOrder(2);
         registrationBean.setFilter(new MyFilter());
         registrationBean.addUrlPatterns("/*"); // 指定过滤的URL
         return registrationBean;
@@ -136,7 +138,7 @@ public class SpringMvcConfig {
     @Bean
     public FilterRegistrationBean<FirstFilter> firstFilter() {
         FilterRegistrationBean<FirstFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setOrder(Integer.MAX_VALUE + 12);
+        registrationBean.setOrder(3);
         registrationBean.setFilter(new FirstFilter());
         registrationBean.addUrlPatterns("/*"); // 指定过滤的URL
         return registrationBean;
@@ -145,10 +147,19 @@ public class SpringMvcConfig {
     @Bean
     public FilterRegistrationBean<SecondFilter> secondFilter() {
         FilterRegistrationBean<SecondFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setOrder(Integer.MAX_VALUE + 10);
+        registrationBean.setOrder(4);
         registrationBean.setFilter(new SecondFilter());
         registrationBean.addUrlPatterns("/*"); // 指定过滤的URL
         return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<BodyTypeExtractingFilter> bodyTypeExtractingFilter() {
+        FilterRegistrationBean<BodyTypeExtractingFilter> registration = new FilterRegistrationBean<>();
+        registration.setFilter(new BodyTypeExtractingFilter());
+        registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        registration.addUrlPatterns("/*");
+        return registration;
     }
 
     @Bean
