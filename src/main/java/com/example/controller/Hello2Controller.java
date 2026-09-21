@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author: badBoy
@@ -91,6 +93,24 @@ public class Hello2Controller extends HelloController {
         // 这里可以把 dto 直接交给业务层处理
         user.setUserName("B");
         return ResponseEntity.ok(user);
+    }
+
+    @RequestMapping(value = "test", method = RequestMethod.GET)
+    public ResponseEntity<String> testVisualVM() throws InterruptedException {
+        List<String> persionList = new ArrayList<>();
+        for (int i = 0; i < 10000; i++) {
+            int finalI = i;
+            new Thread(() -> {
+                String person = new String();
+                persionList.add(person);
+                System.out.println(finalI);
+            }, "thread name + " + " " + i).start();
+
+            Thread.sleep(1000);
+        }
+        System.out.println("--------------over-------------");
+
+        return ResponseEntity.ok("OVER");
     }
 
 }

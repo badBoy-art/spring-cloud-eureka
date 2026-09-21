@@ -3,16 +3,11 @@ package com.example.registrar;
 import com.example.condition.BodyTypeCondition;
 import com.example.configurer.BodyTypeMapping;
 import jakarta.servlet.ServletContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -78,7 +73,9 @@ public class BodyTypeMappingRegistrar implements BeanPostProcessor, ApplicationL
             BodyTypeMapping mapping = AnnotatedElementUtils
                     .findMergedAnnotation(method, BodyTypeMapping.class);
 
-            if (mapping == null) continue;
+            if (mapping == null) {
+                continue;
+            }
 
             String[] paths = resolvePaths(mapping);
             if (paths.length == 0) {

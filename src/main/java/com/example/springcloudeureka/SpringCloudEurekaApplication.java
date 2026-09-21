@@ -38,7 +38,8 @@ import java.util.Locale;
         "com.example.config",
         "com.example.aop",
         "com.example.debezium",
-        "com.example.registrar"
+        "com.example.registrar",
+        "com.example.asr"
 })
 //@EnableDiscoveryClient
 //@EnableSwagger2
