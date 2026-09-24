@@ -24,6 +24,9 @@
         <spring-cloud.version>2025.0.0</spring-cloud.version>
         <debezium.version>1.5.2.Final</debezium.version>
         <java.version>21</java.version>
+        <!-- Drools 10.x 需要 JDK17+，本工程 JDK21 直接用最新 10.2.0；
+             JDK8 工程要用 7.73.0.Final（见 drools-rule-engine skill 的版本矩阵） -->
+        <drools.version>10.2.0</drools.version>
     </properties>
 
     <dependencies>
@@ -227,20 +230,19 @@
         </dependency>
 
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.11.0</version>
-        </dependency>
-
-        <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
             <version>1.4</version>
         </dependency>
+
+        <!-- 这里原本重复声明了 commons-io 2.6（后声明的覆盖先声明的，Maven 也会报
+             "'groupId:artifactId' must be unique"）。drools-decisiontables 传递进来的 POI 5.4.1
+             需要新版 commons-io（UnsynchronizedByteArrayOutputStream.builder() 从 2.12 起才有），
+             2.6 会让"生成/读取决策表 xlsx"直接 NoClassDefFoundError / NoSuchMethodError，故只留这一条。 -->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.6</version>
+            <version>2.18.0</version>
         </dependency>
 
         <dependency>
@@ -260,6 +262,36 @@
             <groupId>com.alibaba.cloud.ai</groupId>
             <artifactId>spring-ai-alibaba-starter-dashscope</artifactId>
             <version>1.1.2.0</version>
+        </dependency>
+
+        <!-- ===== Drools 规则引擎（com.example.rule）：运行时动态规则 + Excel 决策表 =====
+             drools-engine 是 10.x 的聚合包（kie-api/kie-internal/drools-core/wiring-dynamic/
+             kiesession/tms/compiler/model-compiler/model-codegen/commands），7.x 没有这个包。
+             drools-mvel：dialect "mvel" 需要它；drools-decisiontables：决策表 + 自带 poi/poi-ooxml。
+             注意：不需要 kie-spring —— Drools 与 Spring 没有必须的框架耦合，
+             KieContainer/KieBase 用 @Bean 暴露即可（kie-spring 停更在 7.74.1.Final）。 -->
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-engine</artifactId>
+            <version>${drools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-mvel</artifactId>
+            <version>${drools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-decisiontables</artifactId>
+            <version>${drools.version}</version>
+        </dependency>
+        <!-- minio 8.5.2 传递进来 commons-compress 1.21，而 drools-decisiontables 传递进来的
+             POI 5.4.1（poi-ooxml）需要 1.27.1 —— 1.21 里 ZipArchiveOutputStream.putArchiveEntry
+             还是老签名，会在生成/读取决策表 xlsx 时抛 NoSuchMethodError。这里显式提升版本。 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.27.1</version>
         </dependency>
     </dependencies>
 

@@ -39,7 +39,8 @@ import java.util.Locale;
         "com.example.aop",
         "com.example.debezium",
         "com.example.registrar",
-        "com.example.asr"
+        "com.example.asr",
+        "com.example.rule"
 })
 //@EnableDiscoveryClient
 //@EnableSwagger2
